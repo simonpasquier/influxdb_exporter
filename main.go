@@ -207,15 +207,15 @@ func main() {
 	http.Handle(*metricsPath, prometheus.Handler())
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-    w.Write([]byte(`<html>
+		w.Write([]byte(`<html>
     <head><title>InfluxDB Exporter</title></head>
     <body>
     <h1>InfluxDB Exporter</h1>
     <p><a href="` + *metricsPath + `">Metrics</a></p>
     </body>
     </html>`))
-  })
+	})
 
-  log.Infof("Starting Server: %s", *webAddress)
-  http.ListenAndServe(*webAddress, nil)
+	log.Infof("Starting Server: %s", *webAddress)
+	http.ListenAndServe(*webAddress, nil)
 }
