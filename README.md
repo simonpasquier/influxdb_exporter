@@ -1,12 +1,16 @@
-# InfluxDB Exporter
+# InfluxDB Exporter [![Build Status](https://travis-ci.org/prometheus/influxdb_exporter.svg)][travis]
+
+[![CircleCI](https://circleci.com/gh/prometheus/influxdb_exporter/tree/master.svg?style=shield)][circleci]
+[![Docker Repository on Quay](https://quay.io/repository/prometheus/influxdb-exporter/status)][quay]
+[![Docker Pulls](https://img.shields.io/docker/pulls/prom/influxdb-exporter.svg?maxAge=604800)][hub]
 
 An exporter for metrics in the InfluxDB format used since 0.9.0. It collects
-metrics in the 
+metrics in the
 [line protocol](https://docs.influxdata.com/influxdb/v0.10/write_protocols/line/) via a HTTP API,
-transforms them and exposes them for consumption by Prometheus. 
+transforms them and exposes them for consumption by Prometheus.
 
 If you are sending data to InfluxDB in Graphite or Collectd formats, see the
-[graphite_exporter](https://github.com/prometheus/graphite_exporter) 
+[graphite_exporter](https://github.com/prometheus/graphite_exporter)
 and [collectd_exporter](https://github.com/prometheus/collectd_exporter) respectively.
 
 This exporter is useful for exporting metrics from existing collectd setups, as
@@ -27,3 +31,9 @@ for example, put the following in your `telegraf.conf`:
 
 Note that Telegraf already supports outputing Prometheus metrics over HTTP via
 `outputs.prometheus_client`, which avoids having to also run the influxdb_exporter.
+
+
+[circleci]: https://circleci.com/gh/prometheus/influxdb_exporter
+[hub]: https://hub.docker.com/r/prom/influxdb-exporter/
+[travis]: https://travis-ci.org/prometheus/influxdb_exporter
+[quay]: https://quay.io/repository/prometheus/influxdb-exporter
