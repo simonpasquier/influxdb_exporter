@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"regexp"
 	"sort"
 	"sync"
@@ -25,15 +26,17 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/common/log"
+	"github.com/prometheus/common/version"
 
 	"github.com/influxdata/influxdb/models"
 )
 
 var (
-	webAddress   = flag.String("web.listen-address", ":9122", "Address on which to expose metrics and web interface.")
-	metricsPath  = flag.String("web.telemetry-path", "/metrics", "Path under which to expose Prometheus metrics.")
-	sampleExpiry = flag.Duration("influxdb.sample-expiry", 5*time.Minute, "How long a sample is valid for.")
-	lastPush     = prometheus.NewGauge(
+	showVersion   = flag.Bool("version", false, "Print version information.")
+	listenAddress = flag.String("web.listen-address", ":9122", "Address on which to expose metrics and web interface.")
+	metricsPath   = flag.String("web.telemetry-path", "/metrics", "Path under which to expose Prometheus metrics.")
+	sampleExpiry  = flag.Duration("influxdb.sample-expiry", 5*time.Minute, "How long a sample is valid for.")
+	lastPush      = prometheus.NewGauge(
 		prometheus.GaugeOpts{
 			Name: "influxdb_last_push_timestamp_seconds",
 			Help: "Unix timestamp of the last received influxdb metrics push in seconds.",
@@ -192,8 +195,20 @@ func (c influxDBCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- lastPush.Desc()
 }
 
+func init() {
+	prometheus.MustRegister(version.NewCollector("influxdb_exporter"))
+}
+
 func main() {
 	flag.Parse()
+
+	if *showVersion {
+		fmt.Fprintln(os.Stdout, version.Print("influxdb_exporter"))
+		os.Exit(0)
+	}
+
+	log.Infoln("Starting influxdb_exporter", version.Info())
+	log.Infoln("Build context", version.BuildContext())
 
 	c := newInfluxDBCollector()
 	prometheus.MustRegister(c)
@@ -216,6 +231,6 @@ func main() {
     </html>`))
 	})
 
-	log.Infoln("Starting Server:", *webAddress)
-	http.ListenAndServe(*webAddress, nil)
+	log.Infoln("Listening on", *listenAddress)
+	http.ListenAndServe(*listenAddress, nil)
 }
