@@ -24,7 +24,7 @@ import (
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/log"
+	"github.com/prometheus/common/log"
 
 	"github.com/influxdata/influxdb/models"
 )
@@ -216,6 +216,6 @@ func main() {
     </html>`))
 	})
 
-	log.Infof("Starting Server: %s", *webAddress)
+	log.Infoln("Starting Server:", *webAddress)
 	http.ListenAndServe(*webAddress, nil)
 }
