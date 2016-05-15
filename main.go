@@ -117,7 +117,6 @@ func (c *influxDBCollector) influxDBPost(w http.ResponseWriter, r *http.Request)
 			for k, v := range s.Tags() {
 				sample.Labels[invalidChars.ReplaceAllString(k, "_")] = v
 			}
-			fmt.Printf("%q\n", sample)
 
 			// Calculate a consistent unique ID for the sample.
 			labelnames := make([]string, 0, len(sample.Labels))
@@ -164,7 +163,7 @@ func (c *influxDBCollector) processSamples() {
 }
 
 // Collect implements prometheus.Collector.
-func (c influxDBCollector) Collect(ch chan<- prometheus.Metric) {
+func (c *influxDBCollector) Collect(ch chan<- prometheus.Metric) {
 	ch <- lastPush
 
 	c.mu.Lock()
@@ -188,7 +187,7 @@ func (c influxDBCollector) Collect(ch chan<- prometheus.Metric) {
 }
 
 // Describe implements prometheus.Collector.
-func (c influxDBCollector) Describe(ch chan<- *prometheus.Desc) {
+func (c *influxDBCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- lastPush.Desc()
 }
 
