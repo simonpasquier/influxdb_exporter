@@ -84,7 +84,7 @@ func (c *influxDBCollector) serveUdp() {
 			precision := "ns"
 			points, err := models.ParsePointsWithPrecision(bufCopy, time.Now().UTC(), precision)
 			if err != nil {
-				log.Errorf("error parsing udp packet: %s", err)
+				log.Errorf("Error parsing udp packet: %s", err)
 				udpParseErrors.Inc()
 				return
 			}
