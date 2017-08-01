@@ -253,6 +253,7 @@ func init() {
 }
 
 func main() {
+	log.AddFlags(kingpin.CommandLine)
 	kingpin.Version(version.Print("influxdb_exporter"))
 	kingpin.HelpFlag.Short('h')
 	kingpin.Parse()
