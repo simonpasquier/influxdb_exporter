@@ -9,6 +9,12 @@ metrics in the
 [line protocol][line_protocol] via a HTTP API,
 transforms them and exposes them for consumption by Prometheus.
 
+This exporter supports float, int and boolean fields. Tags are converted to Prometheus labels.
+
+The exporter also listens on a UDP socket, port 9122 by default.
+
+## Alternatives
+
 If you are sending data to InfluxDB in Graphite or Collectd formats, see the
 [graphite_exporter][graphite_exporter]
 and [collectd_exporter][collectd_exporter] respectively.
@@ -17,9 +23,15 @@ This exporter is useful for exporting metrics from existing collectd setups, as
 well as for metrics which are not covered by the core Prometheus exporters such
 as the [Node Exporter][node_exporter].
 
-This exporter supports float, int and boolean fields. Tags are converted to Prometheus labels.
+The exporter acts like an InfluxDB server, it does not connect to one. For
+metrics concerning the InfluxDB server, use the [metrics endpoint][influxdb_metrics]
+built into InfluxDB.
 
-The exporter also listens on a UDP socket, port 9122 by default.
+If you are already using Telegraf, it can serve the same purpose as this
+exporter with the [`outputs.prometheus_client`][telegraf] plugin.
+
+For more information on integrating between the Prometheus and InfluxDB
+ecosystems, see the [influxdata integration page][influx_integration].
 
 ## Example usage with Telegraf
 
@@ -38,7 +50,7 @@ Or if you want to use UDP instead:
 ```
 
 Note that Telegraf already supports outputing Prometheus metrics over HTTP via
-`outputs.prometheus_client`, which avoids having to also run the influxdb_exporter.
+[`outputs.prometheus_client`][telegraf], which avoids having to also run the influxdb_exporter.
 
 
 [circleci]: https://circleci.com/gh/prometheus/influxdb_exporter
@@ -49,3 +61,6 @@ Note that Telegraf already supports outputing Prometheus metrics over HTTP via
 [graphite_exporter]: https://github.com/prometheus/graphite_exporter
 [collectd_exporter]: https://github.com/prometheus/collectd_exporter
 [node_exporter]: https://github.com/prometheus/node_exporter
+[influxdb_metrics]: https://docs.influxdata.com/influxdb/v1.5/administration/server_monitoring/#influxdb-metrics-http-endpoint
+[telegraf]: https://docs.influxdata.com/telegraf/v1.7/plugins/outputs/#prometheus-client-prometheus-client-https-github-com-influxdata-telegraf-tree-release-1-7-plugins-outputs-prometheus-client
+[influx_integration]: https://www.influxdata.com/integration/prometheus-monitoring-tool/
