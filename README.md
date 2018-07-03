@@ -6,16 +6,16 @@
 
 An exporter for metrics in the InfluxDB format used since 0.9.0. It collects
 metrics in the
-[line protocol](https://docs.influxdata.com/influxdb/v0.10/write_protocols/line/) via a HTTP API,
+[line protocol][line_protocol] via a HTTP API,
 transforms them and exposes them for consumption by Prometheus.
 
 If you are sending data to InfluxDB in Graphite or Collectd formats, see the
-[graphite_exporter](https://github.com/prometheus/graphite_exporter)
-and [collectd_exporter](https://github.com/prometheus/collectd_exporter) respectively.
+[graphite_exporter][graphite_exporter]
+and [collectd_exporter][collectd_exporter] respectively.
 
 This exporter is useful for exporting metrics from existing collectd setups, as
 well as for metrics which are not covered by the core Prometheus exporters such
-as the [Node Exporter](https://github.com/prometheus/node_exporter).
+as the [Node Exporter][node_exporter].
 
 This exporter supports float, int and boolean fields. Tags are converted to Prometheus labels.
 
@@ -45,3 +45,7 @@ Note that Telegraf already supports outputing Prometheus metrics over HTTP via
 [hub]: https://hub.docker.com/r/prom/influxdb-exporter/
 [travis]: https://travis-ci.org/prometheus/influxdb_exporter
 [quay]: https://quay.io/repository/prometheus/influxdb-exporter
+[line_protocol]: https://docs.influxdata.com/influxdb/v0.10/write_protocols/line/
+[graphite_exporter]: https://github.com/prometheus/graphite_exporter
+[collectd_exporter]: https://github.com/prometheus/collectd_exporter
+[node_exporter]: https://github.com/prometheus/node_exporter
