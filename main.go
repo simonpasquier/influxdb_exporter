@@ -69,28 +69,24 @@ type influxDBSample struct {
 func (c *influxDBCollector) serveUdp() {
 	buf := make([]byte, MAX_UDP_PAYLOAD)
 	for {
-
-		select {
-		default:
-			n, _, err := c.conn.ReadFromUDP(buf)
-			if err != nil {
-				log.Warnf("Failed to read UDP message: %s", err)
-				continue
-			}
-
-			bufCopy := make([]byte, n)
-			copy(bufCopy, buf[:n])
-
-			precision := "ns"
-			points, err := models.ParsePointsWithPrecision(bufCopy, time.Now().UTC(), precision)
-			if err != nil {
-				log.Errorf("Error parsing udp packet: %s", err)
-				udpParseErrors.Inc()
-				return
-			}
-
-			c.parsePointsToSample(points)
+		n, _, err := c.conn.ReadFromUDP(buf)
+		if err != nil {
+			log.Warnf("Failed to read UDP message: %s", err)
+			continue
 		}
+
+		bufCopy := make([]byte, n)
+		copy(bufCopy, buf[:n])
+
+		precision := "ns"
+		points, err := models.ParsePointsWithPrecision(bufCopy, time.Now().UTC(), precision)
+		if err != nil {
+			log.Errorf("Error parsing udp packet: %s", err)
+			udpParseErrors.Inc()
+			return
+		}
+
+		c.parsePointsToSample(points)
 	}
 }
 
@@ -133,7 +129,7 @@ func (c *influxDBCollector) influxDBPost(w http.ResponseWriter, r *http.Request)
 	c.parsePointsToSample(points)
 
 	// InfluxDB returns a 204 on success.
-	http.Error(w, "", 204)
+	http.Error(w, "", http.StatusNoContent)
 }
 
 func (c *influxDBCollector) parsePointsToSample(points []models.Point) {
