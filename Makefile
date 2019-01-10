@@ -11,4 +11,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+DOCKER_IMAGE_NAME ?= influxdb-exporter
+
 include Makefile.common
