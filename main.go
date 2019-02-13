@@ -43,7 +43,7 @@ var (
 	metricsPath     = kingpin.Flag("web.telemetry-path", "Path under which to expose Prometheus metrics.").Default("/metrics").String()
 	sampleExpiry    = kingpin.Flag("influxdb.sample-expiry", "How long a sample is valid for.").Default("5m").Duration()
 	bindAddress     = kingpin.Flag("udp.bind-address", "Address on which to listen for udp packets.").Default(":9122").String()
-	exportTimestamp = kingpin.Flag("timestamps", "Export timestamp of points").Bool()
+	exportTimestamp = kingpin.Flag("timestamps", "Export timestamps of points").Bool()
 	lastPush        = prometheus.NewGauge(
 		prometheus.GaugeOpts{
 			Name: "influxdb_last_push_timestamp_seconds",
