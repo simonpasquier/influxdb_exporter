@@ -29,6 +29,11 @@ http_requests_total{method="post",code="200"} 1027 1395066363000
 http_requests_total{method="post",code="400"}    3 1395066363000
 ```
 
+When querying, this means that the sample is attributed to the time it was
+submitted to the exporter, not the time Prometheus scraped it. However, if the
+metric was submitted multiple time in between exporter scrapes, only the last
+value and timestamp will be stored.
+
 ## Alternatives
 
 If you are sending data to InfluxDB in Graphite or Collectd formats, see the
