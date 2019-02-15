@@ -13,6 +13,22 @@ This exporter supports float, int and boolean fields. Tags are converted to Prom
 
 The exporter also listens on a UDP socket, port 9122 by default.
 
+## Timestamps
+
+By default metrics exposed without original timestamps like this:
+
+```
+http_requests_total{method="post",code="200"} 1027
+http_requests_total{method="post",code="400"}    3
+```
+
+If you want to add original timestamps to exposed metrics, please use flag `--timestamps` and metrics will looks like:
+
+```
+http_requests_total{method="post",code="200"} 1027 1395066363000
+http_requests_total{method="post",code="400"}    3 1395066363000
+```
+
 ## Alternatives
 
 If you are sending data to InfluxDB in Graphite or Collectd formats, see the

@@ -39,11 +39,12 @@ const (
 )
 
 var (
-	listenAddress = kingpin.Flag("web.listen-address", "Address on which to expose metrics and web interface.").Default(":9122").String()
-	metricsPath   = kingpin.Flag("web.telemetry-path", "Path under which to expose Prometheus metrics.").Default("/metrics").String()
-	sampleExpiry  = kingpin.Flag("influxdb.sample-expiry", "How long a sample is valid for.").Default("5m").Duration()
-	bindAddress   = kingpin.Flag("udp.bind-address", "Address on which to listen for udp packets.").Default(":9122").String()
-	lastPush      = prometheus.NewGauge(
+	listenAddress   = kingpin.Flag("web.listen-address", "Address on which to expose metrics and web interface.").Default(":9122").String()
+	metricsPath     = kingpin.Flag("web.telemetry-path", "Path under which to expose Prometheus metrics.").Default("/metrics").String()
+	sampleExpiry    = kingpin.Flag("influxdb.sample-expiry", "How long a sample is valid for.").Default("5m").Duration()
+	bindAddress     = kingpin.Flag("udp.bind-address", "Address on which to listen for udp packets.").Default(":9122").String()
+	exportTimestamp = kingpin.Flag("timestamps", "Export timestamps of points").Default("false").Bool()
+	lastPush        = prometheus.NewGauge(
 		prometheus.GaugeOpts{
 			Name: "influxdb_last_push_timestamp_seconds",
 			Help: "Unix timestamp of the last received influxdb metrics push in seconds.",
@@ -230,11 +231,17 @@ func (c *influxDBCollector) Collect(ch chan<- prometheus.Metric) {
 		if ageLimit.After(sample.Timestamp) {
 			continue
 		}
-		ch <- prometheus.MustNewConstMetric(
+
+		metric := prometheus.MustNewConstMetric(
 			prometheus.NewDesc(sample.Name, "InfluxDB Metric", []string{}, sample.Labels),
 			prometheus.UntypedValue,
 			sample.Value,
 		)
+
+		if *exportTimestamp {
+			metric = prometheus.NewMetricWithTimestamp(sample.Timestamp, metric)
+		}
+		ch <- metric
 	}
 }
 
