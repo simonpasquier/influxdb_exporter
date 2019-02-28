@@ -1,4 +1,4 @@
-## Unreleased / ????-??-??
+## 0.2.0 / 2019-02-28
 
 * [CHANGE] Switch to Kingpin flag library ([#14](https://github.com/prometheus/influxdb_exporter/pull/14))
 * [FEATURE] Optionally export samples with timestamp ([#36](https://github.com/prometheus/influxdb_exporter/pull/36))
