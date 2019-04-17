@@ -1,3 +1,7 @@
+## ?.?.? / unreleased
+
+* [CHANGE] Do not run as root in the Docker container by default ([#40](https://github.com/prometheus/influxdb_exporter/pull/40))
+
 ## 0.2.0 / 2019-02-28
 
 * [CHANGE] Switch to Kingpin flag library ([#14](https://github.com/prometheus/influxdb_exporter/pull/14))
